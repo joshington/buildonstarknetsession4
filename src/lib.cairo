@@ -1,25 +1,32 @@
-fn main() -> u32 {
-    fib(16)
+
+//ownership system in cairo
+
+#[derive(Drop)]
+struct Member {
+    name: ByteArray,
+    age: u8,
 }
 
-fn fib(mut n: u32) -> u32 {
-    let mut a: u32 = 0;
-    let mut b: u32 = 1;
-    while n != 0 {
-        n = n - 1;
-        let temp = b;
-        b = a + b;
-        a = temp;
-    };
-    a
+//snap operator
+#[derive(Drop)]
+struct Rectangle {
+    height:u8,
+    width:u8,
 }
 
-#[cfg(test)]
-mod tests {
-    use super::fib;
+//make a reference
+fn find_area(rec:@Rectangle) -> u8 {
+    *rec.height * *rec.width
+    //desnap operator
+}
 
-    #[test]
-    fn it_works() {
-        assert(fib(16) == 987, 'it works!');
-    }
+
+
+
+fn main() {
+    let rec1 = Rectangle {height:3, width:4};
+    //constructed a rectnagle 
+    let area = find_area(@rec1);
+    println!("the area of the rectangle is: {}", area);
+
 }
